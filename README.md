@@ -1,6 +1,6 @@
 # Lab Active Directory — domaine meyes.local
 
-Je suis étudiant en mastère réseau et cybersécurité, et je cherche une alternance dans ce domaine. Pour progresser et avoir quelque chose de concret à montrer en entretien, j'ai monté de A à Z un petit domaine Active Directory chez moi, en VirtualBox. Ce dépôt documente ce que j'ai fait, comment, et ce que j'ai appris en cours de route — y compris les galères, parce que c'est souvent là qu'on apprend le plus.
+Je suis étudiant en M1 réseau et cybersécurité, et je cherche une alternance dans ce domaine. Pour progresser et avoir quelque chose de concret à montrer en entretien, j'ai monté de A à Z un petit domaine Active Directory chez moi, en VirtualBox. Ce dépôt documente ce que j'ai fait, comment, et ce que j'ai appris en cours de route — y compris les galères, parce que c'est souvent là qu'on apprend le plus.
 
 ## Ce que je voulais apprendre
 
@@ -61,7 +61,7 @@ Créer une GPO, c'est facile. Je voulais aller plus loin et vérifier concrètem
 
 Ce lab n'a pas été une ligne droite, et je trouve que c'est important de le montrer :
 
-- **Pendant plusieurs jours, impossible de me connecter au serveur.** Windows me répondait « mot de passe incorrect » alors que j'étais sûr de mon mot de passe. J'ai testé plusieurs pistes (disposition du clavier dans la VM, réseau, snapshot), sans trouver la cause exacte. J'ai essayé de réinitialiser le mot de passe via le mode de restauration des services d'annuaire (DSRM) en démarrant sur l'ISO d'installation, mais plutôt que d'insister, j'ai choisi de recréer le contrôleur de domaine avec les mêmes OU et les mêmes GPO, pOur avancer plus vite sur la partie que je voulais vraiment pratiquer : la gestion des GPO.
+- **Pendant plusieurs jours, impossible de me connecter au serveur.** Windows me répondait « mot de passe incorrect » alors que j'étais sûr de mon mot de passe. J'ai testé plusieurs pistes (disposition du clavier dans la VM, réseau, snapshot), sans trouver la cause exacte. J'ai essayé de réinitialiser le mot de passe via le mode de restauration des services d'annuaire (DSRM) en démarrant sur l'ISO d'installation, mais plutôt que d'insister, j'ai choisi de recréer le contrôleur de domaine avec les mêmes OU et les mêmes GPO, pour avancer plus vite sur la partie que je voulais vraiment pratiquer : la gestion des GPO.
 - **Le client refusait de rejoindre le domaine** avec l'erreur « le nom réseau spécifié n'est plus disponible ». En vérifiant, le serveur n'avait pas encore fini de démarrer tous ses services au moment de la tentative. Il a suffi d'attendre quelques minutes et de réessayer.
 - **Un utilisateur du domaine n'arrivait pas à se connecter**, malgré le bon mot de passe. En fait, je tapais son prénom au lieu de son véritable identifiant de connexion (`ibrahim` au lieu de `ibrahim.coulibaly`). `Get-ADUser -Filter * | Select Name, SamAccountName` m'a permis de vérifier les vrais identifiants.
 
