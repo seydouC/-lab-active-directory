@@ -41,7 +41,7 @@ J'ai imaginé une petite entreprise fictive avec quatre services, et un utilisat
 |---|---|---|
 | DIRECTION | Rokia Coulibaly | rokia.coulibaly |
 | LOGISTIQUE | Gaoussou Coulibaly | gaoussou.coulibaly |
-| COMPTABILITE | Ibrahim Coulibaly | ibrahim.coulibaly |
+| COMPTABILITE | Ibrahim Coulibaly | ibrahimoulibaly |
 | INFORMATIQUE | Mamadou Coulibaly | mamadou.coulibaly |
 
 ### Les GPO, et surtout : est-ce qu'elles marchent vraiment ?
