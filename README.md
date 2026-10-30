@@ -54,7 +54,7 @@ Créer une GPO, c'est facile. Je voulais aller plus loin et vérifier concrètem
 
 | GPO | Service visé | Ce qu'elle bloque | Résultat |
 |---|---|---|---|
-| `INTERDIRE-PANNEAU-CONF` | COMPTABILTE | Le Panneau de configuration | ✅ Bloqué, avec le message « Cette opération a été annulée en raison de restrictions sur cet ordinateur » |
+| `INTERDIRE-PANNEAU-CONF` | COMPTABILITE | Le Panneau de configuration | ✅ Bloqué, avec le message « Cette opération a été annulée en raison de restrictions sur cet ordinateur » |
 | `RESTRICTION-CMD` | LOGISTIQUE | L'invite de commandes | ✅ Bloquée, avec le message « L'invite de commandes a été désactivée par votre administrateur » |
 
 ## Les galères, et comment je m'en suis sorti
