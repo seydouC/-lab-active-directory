@@ -1,81 +1,45 @@
-# Lab Active Directory — domaine meyes.local
+# Étape 2 : service DHCP sur le serveur
 
-Je suis étudiant en M1 réseau et cybersécurité, et je cherche une alternance dans ce domaine. Pour progresser et avoir quelque chose de concret à montrer en entretien, j'ai monté de A à Z un petit domaine Active Directory chez moi, en VirtualBox. Ce dépôt documente ce que j'ai fait, comment, et ce que j'ai appris en cours de route — y compris les galères, parce que c'est souvent là qu'on apprend le plus.
+## Objectif
+Faire distribuer automatiquement les adresses IP aux postes du domaine par le serveur Windows, au lieu de les configurer à la main sur chaque machine.
 
-## Ce que je voulais apprendre
+## Environnement
+- Serveur : `SRV-AD-01` (Windows Server 2022), contrôleur du domaine `meyes.local`, adresse IP fixe `192.168.10.100`
+- Client : poste Windows 10 joint au domaine (nom d'hôte `DESKTOP-AM8UL1Q`)
+- Hyperviseur : VirtualBox
 
-Active Directory est utilisé dans presque toutes les entreprises, et c'est aussi une cible très étudiée en sécurité. Je voulais comprendre comment il fonctionne de l'intérieur avant de m'attaquer à la partie attaque/défense : créer un domaine, organiser des utilisateurs, et surtout vérifier que les stratégies de groupe (GPO) font vraiment ce qu'elles sont censées faire, pas juste les créer et espérer que ça marche.
+## Démarche
+1. Installation du rôle **Serveur DHCP** sur `SRV-AD-01` et autorisation du serveur dans le domaine
+2. Création d'une étendue IPv4 `Etendue-Meyes` pour le réseau `192.168.10.0/24`
+3. Définition du pool d'adresses distribuées : de `192.168.10.150` à `192.168.10.200`, ce qui laisse les adresses plus basses pour les machines à IP fixe (dont le serveur)
+4. Passage du client en configuration automatique (DHCP) et vérification
 
-## Mon environnement
+## Vérifications
 
-| Élément | Détail |
-|---|---|
-| Hyperviseur | VirtualBox |
-| Contrôleur de domaine | Windows Server 2022 — `SRV-AD-01` |
-| Client | Windows 10 Pro — `CLIENT-WINDOWS10` |
-| Domaine | `meyes.local` |
-| IP du serveur | 192.168.10.100 (DNS configuré sur lui-même) |
-| IP du client | 192.168.10.101 |
-| Réseau | Réseau interne VirtualBox, les deux VM isolées sur le même segment |
+### Pool d'adresses
+La console DHCP affiche la plage distribuée : `192.168.10.150` à `192.168.10.200`.
 
-## Schéma
+![Pool d'adresses](captures/01-pool-adresses.png)
 
-```
-Réseau interne VirtualBox (192.168.10.0/24)
+### Baux d'adresses
+Le client apparaît dans les baux avec l'adresse `192.168.10.150` (type DHCP). Cette capture date d'avant le renouvellement du bail effectué ensuite sur le client (voir ci-dessous).
 
-[ SRV-AD-01 ]  <----->  [ CLIENT-WINDOWS10 ]
-Windows Server 2022      Windows 10
-Controleur de domaine    Membre du domaine
-192.168.10.100            192.168.10.101
-Domaine : meyes.local
-```
+![Baux d'adresses](captures/02-baux-adresses.png)
 
+### Configuration reçue par le client
+`ipconfig /all` sur le client, après `ipconfig /release` puis `ipconfig /renew` :
+- DHCP activé : Oui
+- Adresse IPv4 : `192.168.10.150`, masque `255.255.255.0`
+- Serveur DHCP : `192.168.10.100`
+- Serveur DNS : `192.168.10.100`
+- Bail obtenu le 1er novembre 2026, expirant le 9 novembre 2026 (durée de 8 jours)
 
-## Ce que j'ai mis en place
+![ipconfig /all sur le client](captures/03-ipconfig-client.png)
 
-### Les OU et les utilisateurs
+Les GPO configurées précédemment restent appliquées au client après le passage en DHCP.
 
-J'ai imaginé une petite entreprise fictive avec quatre services, et un utilisateur type par service :
+## Remarque
+Une première capture de `ipconfig /all` affichait une date d'obtention du bail en 1890. L'horloge de la VM cliente avait dérivé : le bail a été renouvelé après avoir remis le client à l'heure, et la capture ci-dessus est celle du bail renouvelé. Dans un domaine Active Directory, l'heure des machines doit rester cohérente avec celle du serveur.
 
-| Service (OU) | Utilisateur | Identifiant |
-|---|---|---|
-| DIRECTION | Rokia Coulibaly | rokia.coulibaly |
-| LOGISTIQUE | Gaoussou Coulibaly | gaoussou.coulibaly |
-| COMPTABILITE | Ibrahim Coulibaly | ibrahim.coulibaly |
-| INFORMATIQUE | Mamadou Coulibaly | mamadou.coulibaly |
-
-### Les GPO, et surtout : est-ce qu'elles marchent vraiment ?
-
-Créer une GPO, c'est facile. Je voulais aller plus loin et vérifier concrètement qu'elle s'applique, pas juste qu'elle existe. Pour chacune, j'ai suivi la même méthode :
-1. Connexion sur le client avec le compte concerné.
-2. `gpupdate /force` pour forcer l'application.
-3. `gpresult /r /scope user` pour confirmer qu'elle apparaît bien dans les stratégies appliquées.
-4. Un test réel : j'essaie d'ouvrir ce qui doit être bloqué.
-
-| GPO | Service visé | Ce qu'elle bloque | Résultat |
-|---|---|---|---|
-| `INTERDIRE-PANNEAU-CONF` | COMPTABILITE | Le Panneau de configuration | ✅ Bloqué, avec le message « Cette opération a été annulée en raison de restrictions sur cet ordinateur » |
-| `RESTRICTION-CMD` | LOGISTIQUE | L'invite de commandes | ✅ Bloquée, avec le message « L'invite de commandes a été désactivée par votre administrateur » |
-
-## Les galères, et comment je m'en suis sorti
-
-Ce lab n'a pas été une ligne droite, et je trouve que c'est important de le montrer :
-
-- **Pendant plusieurs jours, impossible de me connecter au serveur.** Windows me répondait « mot de passe incorrect » alors que j'étais sûr de mon mot de passe. J'ai testé plusieurs pistes (disposition du clavier dans la VM, réseau, snapshot), sans trouver la cause exacte. J'ai essayé de réinitialiser le mot de passe via le mode de restauration des services d'annuaire (DSRM) en démarrant sur l'ISO d'installation, mais plutôt que d'insister, j'ai choisi de recréer le contrôleur de domaine avec les mêmes OU et les mêmes GPO, pour avancer plus vite sur la partie que je voulais vraiment pratiquer : la gestion des GPO.
-- **Le client refusait de rejoindre le domaine** avec l'erreur « le nom réseau spécifié n'est plus disponible ». En vérifiant, le serveur n'avait pas encore fini de démarrer tous ses services au moment de la tentative. Il a suffi d'attendre quelques minutes et de réessayer.
-- **Un utilisateur du domaine n'arrivait pas à se connecter**, malgré le bon mot de passe. En fait, je tapais son prénom au lieu de son véritable identifiant de connexion (`ibrahim` au lieu de `ibrahim.coulibaly`). `Get-ADUser -Filter * | Select Name, SamAccountName` m'a permis de vérifier les vrais identifiants.
-
-## Et après ?
-
-Ce lab va continuer à évoluer, je mettrai ce dépôt à jour au fur et à mesure :
-
-- [ ] Mettre en place le DHCP sur le serveur.
-- [ ] Ajouter des GPO de sécurité (complexité des mots de passe, verrouillage de compte).
-- [ ] Créer un dossier partagé avec des permissions différentes selon les services.
-- [ ] Ajouter une VM Kali Linux isolée pour observer comment un domaine AD peut être énuméré (BloodHound).
-- [ ] Suivre des parcours TryHackMe (Pre Security, puis Jr Penetration Tester ou SOC Level 1).
-- [ ] Automatiser certaines tâches avec PowerShell.
-
-## Compétences pratiquées
-
-`Active Directory` `Windows Server` `GPO` `DNS` `VirtualBox` `Administration réseau` `Dépannage système`
+## Compétences mises en pratique
+Installation et configuration du rôle DHCP, étendue et pool d'adresses, baux, vérification côté client (`ipconfig /all`, `/release`, `/renew`), diagnostic d'un décalage d'horloge.
