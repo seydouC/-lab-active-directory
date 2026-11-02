@@ -15,7 +15,7 @@ Active Directory est utilisé dans presque toutes les entreprises, et c'est auss
 | Client | Windows 10 Pro — `CLIENT-WINDOWS10` |
 | Domaine | `meyes.local` |
 | IP du serveur | 192.168.10.100 (DNS configuré sur lui-même) |
-| IP du client | 192.168.10.101 |
+| IP du client | 192.168.10.150 (attribuée par DHCP, étendu .150 à .200 |
 | Réseau | Réseau interne VirtualBox, les deux VM isolées sur le même segment |
 
 ## Schéma
@@ -26,7 +26,7 @@ Réseau interne VirtualBox (192.168.10.0/24)
 [ SRV-AD-01 ]  <----->  [ CLIENT-WINDOWS10 ]
 Windows Server 2022      Windows 10
 Controleur de domaine    Membre du domaine
-192.168.10.100            192.168.10.101
+192.168.10.100            192.168.10.150
 Domaine : meyes.local
 ```
 
