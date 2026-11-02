@@ -67,15 +67,19 @@ Ce lab n'a pas été une ligne droite, et je trouve que c'est important de le mo
 
 ## Et après ?
 
-Ce lab va continuer à évoluer, je mettrai ce dépôt à jour au fur et à mesure :
+Ce lab continue d'évoluer, je mets ce dépôt à jour au fur et à mesure :
 
-- [ ] Mettre en place le DHCP sur le serveur.
-- [ ] Ajouter des GPO de sécurité (complexité des mots de passe, verrouillage de compte).
-- [ ] Créer un dossier partagé avec des permissions différentes selon les services.
-- [ ] Ajouter une VM Kali Linux isolée pour observer comment un domaine AD peut être énuméré (BloodHound).
-- [ ] Suivre des parcours TryHackMe (Pre Security, puis Jr Penetration Tester ou SOC Level 1).
-- [ ] Automatiser certaines tâches avec PowerShell.
+- [x] Mettre en place le DHCP sur le serveur
+- [x] Ajouter des GPO de sécurité (complexité des mots de passe, verrouillage de compte)
+- [x] Créer un dossier partagé avec des permissions différentes selon les services
+- [ ] Ajouter un deuxième contrôleur de domaine et vérifier la réplication
+- [ ] Mettre en place la sauvegarde et la restauration
+- [ ] Simuler des pannes et les dépanner
+- [ ] Ajouter une VM Kali Linux isolée pour observer comment un domaine AD peut être énuméré (BloodHound)
+- [ ] Suivre des parcours TryHackMe (Pre Security, puis Jr Penetration Tester ou SOC Level 1)
+- [ ] Automatiser certaines tâches avec PowerShell
+- [ ] Tester un environnement hybride avec Entra ID
 
 ## Compétences pratiquées
 
-`Active Directory` `Windows Server` `GPO` `DNS` `VirtualBox` `Administration réseau` `Dépannage système`
+`Active Directory` `Windows Server` `GPO` `DNS` `DHCP` `Groupes de sécurité` `Permissions NTFS` `VirtualBox` `Administration réseau` `Dépannage système`
