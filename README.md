@@ -57,6 +57,18 @@ Créer une GPO, c'est facile. Je voulais aller plus loin et vérifier concrètem
 | `INTERDIRE-PANNEAU-CONF` | COMPTABILITE | Le Panneau de configuration | ✅ Bloqué, avec le message « Cette opération a été annulée en raison de restrictions sur cet ordinateur » |
 | `RESTRICTION-CMD` | LOGISTIQUE | L'invite de commandes | ✅ Bloquée, avec le message « L'invite de commandes a été désactivée par votre administrateur » |
 
+### Le service DHCP
+
+Le serveur distribue maintenant les adresses du réseau : étendue `Etendue-Meyes`, de `192.168.10.150` à `192.168.10.200`. Le client reçoit son adresse automatiquement (`192.168.10.150`), avec un bail de 8 jours. [Voir le détail et les captures](02-dhcp/README.md)
+
+### Les GPO de sécurité
+
+Politique de mot de passe sur tout le domaine : 12 caractères minimum, complexité activée, durée de vie de 90 jours. Verrouillage du compte après 5 tentatives, pour 30 minutes. J'ai vérifié sur le client qu'un compte se verrouille bien après des mots de passe incorrects. [Voir le détail et les captures](03-gpo-securite/README.md)
+
+### Le dossier partagé par service
+
+Un partage `\\SRV-AD-01\partage` avec un sous-dossier par service. Chaque service a son groupe de sécurité (`GG-COMPTABILITE`, `GG-LOGISTIQUE`, `GG-DIRECTION`, `GG-INFORMATIQUE`) avec le droit Modification sur son seul dossier. J'ai testé avec les quatre utilisateurs : chacun ouvre son dossier et est refusé sur les autres. [Voir le détail et les captures](04-dossier-partage/README.md)
+
 ## Les galères, et comment je m'en suis sorti
 
 Ce lab n'a pas été une ligne droite, et je trouve que c'est important de le montrer :
