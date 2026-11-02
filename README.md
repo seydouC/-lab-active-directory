@@ -15,7 +15,7 @@ Active Directory est utilisé dans presque toutes les entreprises, et c'est auss
 | Client | Windows 10 Pro — `CLIENT-WINDOWS10` |
 | Domaine | `meyes.local` |
 | IP du serveur | 192.168.10.100 (DNS configuré sur lui-même) |
-| IP du client | 192.168.10.150 (attribuée par DHCP, étendu .150 à .200 |
+| IP du client | 192.168.10.150 (attribuée par DHCP, étendu .150 à .200) |
 | Réseau | Réseau interne VirtualBox, les deux VM isolées sur le même segment |
 
 ## Schéma
