@@ -69,6 +69,10 @@ Politique de mot de passe sur tout le domaine : 12 caractères minimum, complexi
 
 Un partage `\\SRV-AD-01\partage` avec un sous-dossier par service. Chaque service a son groupe de sécurité (`GG-COMPTABILITE`, `GG-LOGISTIQUE`, `GG-DIRECTION`, `GG-INFORMATIQUE`) avec le droit Modification sur son seul dossier. J'ai testé avec les quatre utilisateurs : chacun ouvre son dossier et est refusé sur les autres. [Voir le détail et les captures](04-dossier-partage/README.md)
 
+### Le deuxième contrôleur de domaine
+
+J'ai ajouté un second contrôleur (`SRV-AD-02`) au domaine : l'annuaire a été répliqué depuis `SRV-AD-01`, et `repadmin /replsummary` n'indique aucun échec. J'ai testé la réplication dans les deux sens en créant un utilisateur sur chaque serveur et en vérifiant qu'il apparaissait sur l'autre. [Voir le détail et les captures](05-deuxieme-controleur/README.md)
+
 ## Les galères, et comment je m'en suis sorti
 
 Ce lab n'a pas été une ligne droite, et je trouve que c'est important de le montrer :
@@ -85,7 +89,7 @@ Ce lab continue d'évoluer, je mets ce dépôt à jour au fur et à mesure :
 - [x] Mettre en place le DHCP sur le serveur
 - [x] Ajouter des GPO de sécurité (complexité des mots de passe, verrouillage de compte)
 - [x] Créer un dossier partagé avec des permissions différentes selon les services
-- [ ] Ajouter un deuxième contrôleur de domaine et vérifier la réplication
+- [x] Ajouter un deuxième contrôleur de domaine et vérifier la réplication
 - [ ] Mettre en place la sauvegarde et la restauration
 - [ ] Simuler des pannes et les dépanner
 - [ ] Ajouter une VM Kali Linux isolée pour observer comment un domaine AD peut être énuméré (BloodHound)
