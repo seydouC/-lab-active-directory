@@ -99,4 +99,4 @@ Ce lab continue d'évoluer, je mets ce dépôt à jour au fur et à mesure :
 
 ## Compétences pratiquées
 
-`Active Directory` `Windows Server` `GPO` `DNS` `DHCP` `Groupes de sécurité` `Permissions NTFS` `VirtualBox` `Administration réseau` `Dépannage système`
+`Active Directory` `Windows Server` `GPO` `DNS` `DHCP` `Groupes de sécurité` `Permissions NTFS` `Contrôleur de domaine` `Réplication Active Directory` `VirtualBox` `Administration réseau` `Dépannage système`
