@@ -56,4 +56,7 @@ L'OU **Domain Controllers** contient `SRV-AD-01` et `SRV-AD-02`, tous deux catal
 - **Machine très lente après la promotion** : avec 2 Go de mémoire, un contrôleur de domaine fraîchement promu est lent pendant plusieurs minutes. J'ai attendu au lieu de forcer l'arrêt, ce qui aurait pu abîmer l'annuaire.
 
 ## Pas encore testé
-La
+La tolérance de panne (éteindre un contrôleur et vérifier que le domaine continue de fonctionner) fait partie de la suite du lab.
+
+## Compétences mises en pratique
+Installation du rôle AD DS, promotion d'un contrôleur de domaine supplémentaire, DNS intégré à l'annuaire, catalogue global, réplication Active Directory, vérification avec `repadmin`, diagnostic d'erreurs d'authentification.
