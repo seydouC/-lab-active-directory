@@ -17,7 +17,7 @@ Active Directory est utilisé dans presque toutes les entreprises, et c'est auss
 | Domaine | `meyes.local` |
 | IP du serveur | 192.168.10.100 (DNS configuré sur lui-même) |
 | IP du client | 192.168.10.150 (attribuée par DHCP, étendue .150 à .200) |
-| Réseau | Réseau interne VirtualBox, les deux VM isolées sur le même segment |
+| Réseau | Réseau interne VirtualBox, les VM isolées sur le même segment |
 
 ## Schéma
 
