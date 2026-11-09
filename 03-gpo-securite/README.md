@@ -38,5 +38,21 @@ Après plusieurs mots de passe incorrects successifs sur le poste client, le com
 
 ![Compte verrouillé](03-compte-verrouille-ibrahim.png)
 
+## Retrouver le verrouillage dans les journaux
+Le verrouillage du compte `ibrahim.coulibaly` est enregistré dans le journal **Sécurité** du contrôleur de domaine `SRV-AD-01`, sous l'événement **4740** (« Un compte d'utilisateur a été verrouillé »).
+
+- Compte verrouillé : `MEYES\ibrahim.coulibaly`
+- Ordinateur appelant : `DESKTOP-AM8UL1Q` (le poste client)
+- Date et heure : 01/11/2026 à 21:12:38
+- Enregistré par : `SRV-AD-01.meyes.local`
+
+Pour retrouver cet événement parmi les quelque 30 000 du journal, j'ai filtré sur son numéro avec « Filtrer le journal actuel » dans l'Observateur d'événements.
+
+![Événement 4740](04-evenement-4740-verrouillage.png)
+
+Ce que j'ai observé en plus :
+- Les événements 4625 (échec d'ouverture de session) présents sur le contrôleur correspondent à des tentatives de connexion sur le serveur lui-même.
+- Je n'ai trouvé aucun événement 4771 dans le journal, ni de 4776 daté juste avant ce verrouillage. Je n'ai pas encore vérifié si cela dépend de la configuration de l'audit.
+
 ## Compétences mises en pratique
 Gestion de stratégie de groupe, Default Domain Policy, politique de mot de passe, verrouillage de compte, test depuis un client du domaine.
