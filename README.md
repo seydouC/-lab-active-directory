@@ -64,7 +64,7 @@ Le serveur distribue maintenant les adresses du réseau : étendue `Etendue-Meye
 
 ### Les GPO de sécurité
 
-Politique de mot de passe sur tout le domaine : 12 caractères minimum, complexité activée, durée de vie de 90 jours. Verrouillage du compte après 5 tentatives, pour 30 minutes. J'ai vérifié sur le client qu'un compte se verrouille bien après des mots de passe incorrects. [Voir le détail et les captures](03-gpo-securite/README.md)
+Politique de mot de passe sur tout le domaine : 12 caractères minimum, complexité activée, durée de vie de 90 jours. Verrouillage du compte après 5 tentatives, pour 30 minutes. J'ai vérifié sur le client qu'un compte se verrouille bien après des mots de passe incorrects, puis retrouvé ce verrouillage dans le journal de sécurité du contrôleur (événement 4740 : compte, machine d'origine, heure). [Voir le détail et les captures](03-gpo-securite/README.md)
 
 ### Le dossier partagé par service
 
@@ -91,8 +91,10 @@ Ce lab continue d'évoluer, je mets ce dépôt à jour au fur et à mesure :
 - [x] Ajouter des GPO de sécurité (complexité des mots de passe, verrouillage de compte)
 - [x] Créer un dossier partagé avec des permissions différentes selon les services
 - [x] Ajouter un deuxième contrôleur de domaine et vérifier la réplication
+- [ ] Tester la tolérance de panne : éteindre un contrôleur et vérifier que le domaine continue de fonctionner
 - [ ] Mettre en place la sauvegarde et la restauration
 - [ ] Simuler des pannes et les dépanner
+- [ ] Centraliser et analyser les journaux de sécurité avec un SIEM
 - [ ] Ajouter une VM Kali Linux isolée pour observer comment un domaine AD peut être énuméré (BloodHound)
 - [ ] Suivre des parcours TryHackMe (Pre Security, puis Jr Penetration Tester ou SOC Level 1)
 - [ ] Automatiser certaines tâches avec PowerShell
@@ -100,4 +102,4 @@ Ce lab continue d'évoluer, je mets ce dépôt à jour au fur et à mesure :
 
 ## Compétences pratiquées
 
-`Active Directory` `Windows Server` `GPO` `DNS` `DHCP` `Groupes de sécurité` `Permissions NTFS` `Contrôleur de domaine` `Réplication Active Directory` `VirtualBox` `Administration réseau` `Dépannage système`
+`Active Directory` `Windows Server` `GPO` `DNS` `DHCP` `Groupes de sécurité` `Permissions NTFS` `Contrôleur de domaine` `Réplication Active Directory` `Journaux de sécurité Windows` `VirtualBox` `Administration réseau` `Dépannage système`
