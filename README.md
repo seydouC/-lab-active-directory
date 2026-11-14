@@ -72,7 +72,7 @@ Un partage `\\SRV-AD-01\partage` avec un sous-dossier par service. Chaque servic
 
 ### Le deuxième contrôleur de domaine
 
-J'ai ajouté un second contrôleur (`SRV-AD-02`) au domaine : l'annuaire a été répliqué depuis `SRV-AD-01`, et `repadmin /replsummary` n'indique aucun échec. J'ai testé la réplication dans les deux sens en créant un utilisateur sur chaque serveur et en vérifiant qu'il apparaissait sur l'autre. [Voir le détail et les captures](05-deuxieme-controleur/README.md)
+J'ai ajouté un second contrôleur (`SRV-AD-02`) au domaine : l'annuaire a été répliqué depuis `SRV-AD-01`, et `repadmin /replsummary` n'indique aucun échec. J'ai testé la réplication dans les deux sens, puis la tolérance de panne : avec `SRV-AD-01` éteint, un compte jamais utilisé sur le poste a pu ouvrir une session grâce à `SRV-AD-02`. Le test a aussi montré que le DHCP et le dossier partagé, restés sur le premier serveur, ne suivent pas en cas de panne. [Voir le détail et les captures](05-deuxieme-controleur/README.md)
 
 ## Les galères, et comment je m'en suis sorti
 
@@ -91,7 +91,7 @@ Ce lab continue d'évoluer, je mets ce dépôt à jour au fur et à mesure :
 - [x] Ajouter des GPO de sécurité (complexité des mots de passe, verrouillage de compte)
 - [x] Créer un dossier partagé avec des permissions différentes selon les services
 - [x] Ajouter un deuxième contrôleur de domaine et vérifier la réplication
-- [ ] Tester la tolérance de panne : éteindre un contrôleur et vérifier que le domaine continue de fonctionner
+- [x] Tester la tolérance de panne : éteindre un contrôleur et vérifier que le domaine continue de fonctionner
 - [ ] Mettre en place la sauvegarde et la restauration
 - [ ] Simuler des pannes et les dépanner
 - [ ] Centraliser et analyser les journaux de sécurité avec un SIEM
