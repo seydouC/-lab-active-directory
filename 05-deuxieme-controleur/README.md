@@ -55,8 +55,36 @@ L'OU **Domain Controllers** contient `SRV-AD-01` et `SRV-AD-02`, tous deux catal
 - **Identifiants refusés dans l'assistant de promotion** : l'assistant utilisait le compte administrateur local de la machine. Il faut un compte du domaine : `Administrateur@meyes.local`. Une première saisie avec une barre oblique normale (`MEYES/Administrateur`) donnait aussi un nom de compte invalide.
 - **Machine très lente après la promotion** : avec 2 Go de mémoire, un contrôleur de domaine fraîchement promu est lent pendant plusieurs minutes. J'ai attendu au lieu de forcer l'arrêt, ce qui aurait pu abîmer l'annuaire.
 
-## Pas encore testé
-La tolérance de panne (éteindre un contrôleur et vérifier que le domaine continue de fonctionner) fait partie de la suite du lab.
+## Test de tolérance de panne
+Pour vérifier que le deuxième contrôleur peut prendre le relais, j'ai éteint `SRV-AD-01`, puis ouvert sur le client une session avec `test.retour`, un compte créé sur `SRV-AD-02` et jamais utilisé sur ce poste (Windows ne pouvait donc pas utiliser d'identifiants gardés en mémoire).
+
+État des machines : `SRV-AD-01` éteint, `SRV-AD-02` et le client allumés.
+
+![SRV-AD-01 éteint dans VirtualBox](05-09-virtualbox-srv-ad-01-eteint.png)
+
+Résultats sur le client :
+- `whoami` : `meyes\test.retour`
+- `echo %logonserver%` : `\\SRV-AD-02`
+- `nltest /dsgetdc:meyes.local` : contrôleur de domaine `\\SRV-AD-02.meyes.local` (192.168.10.101)
+
+![Résultat du test](05-10-test-tolerance-panne.png)
+
+Pendant ce test, le client avait une adresse fixe (`192.168.10.120`) et `SRV-AD-02` comme serveur DNS, configurés à la main (voir ci-dessous).
+
+### Première tentative échouée
+La première ouverture de session de `test.retour` a été refusée (« votre domaine n'est pas disponible »). Démarche de diagnostic :
+- `nslookup` vers `192.168.10.101` depuis le client : aucune réponse
+- Sur `SRV-AD-02` : adresse IP correcte, service DNS en fonctionnement, et `nslookup meyes.local 127.0.0.1` répond avec les deux contrôleurs : le problème n'était pas sur ce serveur
+- Sur le client : `Test-NetConnection` échoue sur les ports 53 et 389, et `ipconfig /all` montre une adresse `169.254.254.103` : le client n'avait plus d'adresse du réseau
+
+![Client sans adresse](05-11-client-sans-adresse.png)
+
+Cause probable : le DHCP du lab tourne uniquement sur `SRV-AD-01`, éteint pendant le test, et le client a perdu sa configuration réseau. Correction : adresse fixe et DNS configurés à la main, puis test réussi. Après le test, le client a été remis en DHCP.
+
+### Ce que le test montre
+- L'authentification continue quand `SRV-AD-01` est éteint : `SRV-AD-02` répond.
+- Le DHCP n'est installé que sur `SRV-AD-01`, et le dossier partagé n'a été créé que sur `SRV-AD-01` : ils ne suivent pas en cas de panne.
+- Suite prévue : transférer les rôles FSMO, mettre le DHCP en basculement entre les deux serveurs, et rendre le dossier partagé disponible sur les deux.
 
 ## Compétences mises en pratique
-Installation du rôle AD DS, promotion d'un contrôleur de domaine supplémentaire, DNS intégré à l'annuaire, catalogue global, réplication Active Directory, vérification avec `repadmin`, diagnostic d'erreurs d'authentification.
+Installation du rôle AD DS, promotion d'un contrôleur de domaine supplémentaire, DNS intégré à l'annuaire, catalogue global, réplication Active Directory, vérification avec `repadmin`, test de tolérance de panne, diagnostic réseau (`nslookup`, `Test-NetConnection`, `nltest`), diagnostic d'erreurs d'authentification.
