@@ -72,7 +72,11 @@ Un partage `\\SRV-AD-01\partage` avec un sous-dossier par service. Chaque servic
 
 ### Le deuxième contrôleur de domaine
 
-J'ai ajouté un second contrôleur (`SRV-AD-02`) au domaine : l'annuaire a été répliqué depuis `SRV-AD-01`, et `repadmin /replsummary` n'indique aucun échec. J'ai testé la réplication dans les deux sens, puis la tolérance de panne : avec `SRV-AD-01` éteint, un compte jamais utilisé sur le poste a pu ouvrir une session grâce à `SRV-AD-02`. Le test a aussi montré que le DHCP et le dossier partagé, restés sur le premier serveur, ne suivent pas en cas de panne. [Voir le détail et les captures](05-deuxieme-controleur/README.md)
+J'ai ajouté un second contrôleur (`SRV-AD-02`) au domaine : l'annuaire a été répliqué depuis `SRV-AD-01`, et `repadmin /replsummary` n'indique aucun échec. J'ai testé la réplication dans les deux sens, puis la tolérance de panne : avec `SRV-AD-01` éteint, un compte jamais utilisé sur le poste a pu ouvrir une session grâce à `SRV-AD-02`. Le test a aussi montré que le DHCP et le dossier partagé, restés sur le premier serveur, ne suivaient pas en cas de panne. [Voir le détail et les captures](05-deuxieme-controleur/README.md)
+
+### Les rôles FSMO et le DHCP en basculement
+
+J'ai transféré les cinq rôles FSMO de l'annuaire vers `SRV-AD-02`, puis installé le DHCP sur ce serveur et configuré un basculement en équilibrage de charge entre les deux. Avec `SRV-AD-01` éteint, le client a obtenu son adresse auprès de `SRV-AD-02`. Il reste le dossier partagé, qui n'existe que sur `SRV-AD-01`. [Voir le détail et les captures](06-redondance-fsmo-dhcp/README.md)
 
 ## Les galères, et comment je m'en suis sorti
 
@@ -93,6 +97,9 @@ Ce lab continue d'évoluer, je mets ce dépôt à jour au fur et à mesure :
 - [x] Créer un dossier partagé avec des permissions différentes selon les services
 - [x] Ajouter un deuxième contrôleur de domaine et vérifier la réplication
 - [x] Tester la tolérance de panne : éteindre un contrôleur et vérifier que le domaine continue de fonctionner
+- [x] Transférer les rôles FSMO vers le deuxième contrôleur
+- [x] Mettre le DHCP en basculement entre les deux serveurs
+- [ ] Rendre le dossier partagé disponible sur les deux serveurs (DFS)
 - [ ] Mettre en place la sauvegarde et la restauration
 - [ ] Simuler des pannes et les dépanner
 - [ ] Centraliser et analyser les journaux de sécurité avec un SIEM
@@ -103,4 +110,4 @@ Ce lab continue d'évoluer, je mets ce dépôt à jour au fur et à mesure :
 
 ## Compétences pratiquées
 
-`Active Directory` `Windows Server` `GPO` `DNS` `DHCP` `Groupes de sécurité` `Permissions NTFS` `Contrôleur de domaine` `Réplication Active Directory` `Journaux de sécurité Windows` `VirtualBox` `Administration réseau` `Dépannage système`
+`Active Directory` `Windows Server` `GPO` `DNS` `DHCP` `Groupes de sécurité` `Permissions NTFS` `Contrôleur de domaine` `Réplication Active Directory` `FSMO` `DHCP en basculement` `Journaux de sécurité Windows` `VirtualBox` `Administration réseau` `Dépannage système`
